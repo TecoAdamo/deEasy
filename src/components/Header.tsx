@@ -1,16 +1,25 @@
+import { useContext } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { AuthNavigatorRoutesProps } from '../routes/AuthRoutes'
+
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { useState } from 'react'
+import { AuthContext } from '../context/CartContext'
 
 type Props = {
     title: string
-    cartAdd: string
 }
 
-export default function Header({ title, cartAdd }: Props) {
+export default function Header({ title }: Props) {
+    const navigation = useNavigation<AuthNavigatorRoutesProps>()
+
+    const handleGoBack = () => {
+        navigation.goBack()
+    }
+
     return (
         <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleGoBack}>
                 <Ionicons name="chevron-back-outline" size={30} color="white" />
             </TouchableOpacity>
             <Text style={styles.textHeader}>{title}</Text>
@@ -19,7 +28,7 @@ export default function Header({ title, cartAdd }: Props) {
                 <View style={styles.headerBag}>
                     <Ionicons name="bag-outline" size={26} color="white" />
                     <View style={styles.badge}>
-                        <Text style={styles.textBag}>{cartAdd}</Text>
+                        <Text style={styles.textBag}>0</Text>
                     </View>
                 </View>
             </TouchableOpacity>
