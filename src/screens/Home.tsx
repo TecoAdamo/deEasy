@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { FlatList, StyleSheet, View, Text } from 'react-native'
+import { FlatList, StyleSheet, View, Text, ScrollView } from 'react-native'
 
 import Header from '../components/Header'
 import GroupFood from '../components/GroupFoods'
 import PizzaCard from '../components/PizzaCard'
+import { AuthContext } from '../context/CartContext'
 
 export default function Home() {
+    const { nameProduct } = useContext(AuthContext)
+
     const [pizzaCards, setPizzaCards] = useState([
         {
             title: 'Frango com Catupiry',
@@ -31,28 +34,67 @@ export default function Home() {
                 'Pizza com uma mistura de quatro queijos: muçarela, parmesão, gorgonzola e catupiry.',
         },
     ])
+    const [pizzaCardsDc, setPizzaCardsDc] = useState([
+        {
+            title: 'Sedução',
+            price: 'R$ 25.90',
+            description: 'Pizza ddoce.',
+        },
+        {
+            title: 'Sedução',
+            price: 'R$ 25.90',
+            description: 'Pizza ddoce.',
+        },
+        {
+            title: 'Sedução',
+            price: 'R$ 25.90',
+            description: 'Pizza ddoce.',
+        },
+        {
+            title: 'Sedução',
+            price: 'R$ 25.90',
+            description: 'Pizza ddoce.',
+        },
+    ])
 
     return (
-        <View style={styles.container}>
-            <StatusBar style="dark" />
-            <Header title="Menu" cartAdd="0" />
+        <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            showsVerticalScrollIndicator={false}
+        >
+            <View style={styles.container}>
+                <StatusBar style="dark" />
+                <Header title="Home" />
+                <GroupFood />
 
-            <GroupFood />
-
-            <FlatList
-                data={pizzaCards}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <PizzaCard
-                        titlePizza={item.title}
-                        price={item.price}
-                        description={item.description}
-                    />
-                )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-            />
-        </View>
+                <FlatList
+                    data={pizzaCards}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <PizzaCard
+                            titlePizza={item.title}
+                            price={item.price}
+                            description={item.description}
+                        />
+                    )}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                />
+                <FlatList
+                    data={pizzaCardsDc}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <PizzaCard
+                            titlePizza={item.title}
+                            price={item.price}
+                            description={item.description}
+                        />
+                    )}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                />
+            </View>
+        </ScrollView>
     )
 }
 
@@ -62,6 +104,3 @@ const styles = StyleSheet.create({
         backgroundColor: '#191C21',
     },
 })
-function setPizzaCount(arg0: (prevAddPizza: any) => any) {
-    throw new Error('Function not implemented.')
-}
