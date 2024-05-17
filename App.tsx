@@ -1,11 +1,17 @@
 import React from 'react'
-import { AuthContextProvider } from './src/context/CartContext'
-import Home from './src/screens/Home'
+import { Routes } from './src/routes'
+
+import { StatusBar } from 'react-native'
 
 export default function App() {
     return (
-        <AuthContextProvider>
-            <Home />
-        </AuthContextProvider>
+        <>
+            <Routes />
+            <StatusBar
+                barStyle="light-content"
+                backgroundColor="transparent"
+                translucent
+            />
+        </>
     )
 }
