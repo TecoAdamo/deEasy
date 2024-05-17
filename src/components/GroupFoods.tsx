@@ -3,28 +3,26 @@ import { useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 
 import FoodList from './FoodList'
+import { CATEGORIES } from '../utils/products'
+import React from 'react'
 
 export default function GroupFood() {
-    const [groups, setGroups] = useState([
-        'Mais pedidas',
-        'Tradicionais',
-        'Doces',
-    ])
-    const [groupSelected, setGroupSelected] = useState('Frango')
+    const [category, setCategory] = useState(CATEGORIES[0])
+
+    function handleCategorySelect(selectedCategory: string) {
+        setCategory(selectedCategory)
+    }
 
     return (
         <View style={styles.boxHeader}>
             <FlatList
-                data={groups}
+                data={CATEGORIES}
                 keyExtractor={(item) => item}
                 renderItem={({ item }) => (
                     <FoodList
                         title={item}
-                        isActive={
-                            groupSelected.toLocaleUpperCase() ===
-                            item.toLocaleUpperCase()
-                        }
-                        onPress={() => setGroupSelected(item)}
+                        isActive={item === category}
+                        onPress={() => handleCategorySelect(item)}
                     />
                 )}
                 horizontal

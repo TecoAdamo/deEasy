@@ -1,62 +1,15 @@
-import { useState, useContext } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { FlatList, StyleSheet, View, Text, ScrollView } from 'react-native'
+import { Text, StyleSheet, View, SectionList, ScrollView } from 'react-native'
 
 import Header from '../components/Header'
 import GroupFood from '../components/GroupFoods'
-import PizzaCard from '../components/PizzaCard'
-import { AuthContext } from '../context/CartContext'
+
+import { MENU } from '../utils/products'
+import Products from '../components/Products'
+
+import React from 'react'
 
 export default function Home() {
-    const { nameProduct } = useContext(AuthContext)
-
-    const [pizzaCards, setPizzaCards] = useState([
-        {
-            title: 'Frango com Catupiry',
-            price: 'R$ 29.90',
-            description: 'Pizza de frango com catupiry.',
-        },
-        {
-            title: 'Margherita',
-            price: 'R$ 49.90',
-            description:
-                'Pizza tradicional italiana com tomate, muçarela e manjericão.',
-        },
-        {
-            title: 'Calabresa',
-            price: 'R$ 39.90',
-            description: 'Pizza de calabresa com cebola e pimentão.',
-        },
-        {
-            title: '4 Queijos',
-            price: 'R$ 59.90',
-            description:
-                'Pizza com uma mistura de quatro queijos: muçarela, parmesão, gorgonzola e catupiry.',
-        },
-    ])
-    const [pizzaCardsDc, setPizzaCardsDc] = useState([
-        {
-            title: 'Sedução',
-            price: 'R$ 25.90',
-            description: 'Pizza ddoce.',
-        },
-        {
-            title: 'Sedução',
-            price: 'R$ 25.90',
-            description: 'Pizza ddoce.',
-        },
-        {
-            title: 'Sedução',
-            price: 'R$ 25.90',
-            description: 'Pizza ddoce.',
-        },
-        {
-            title: 'Sedução',
-            price: 'R$ 25.90',
-            description: 'Pizza ddoce.',
-        },
-    ])
-
     return (
         <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
@@ -64,34 +17,18 @@ export default function Home() {
         >
             <View style={styles.container}>
                 <StatusBar style="dark" />
-                <Header title="Home" />
+                <Header title="Home" cartQuantityItems={3} />
                 <GroupFood />
-
-                <FlatList
-                    data={pizzaCards}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <PizzaCard
-                            titlePizza={item.title}
-                            price={item.price}
-                            description={item.description}
-                        />
+                <SectionList
+                    style={styles.sectionStyle}
+                    sections={MENU}
+                    keyExtractor={(item) => item.id}
+                    stickySectionHeadersEnabled={false}
+                    renderItem={({ item }) => <Products data={item} />}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text style={styles.containerText}>{title}</Text>
                     )}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                />
-                <FlatList
-                    data={pizzaCardsDc}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <PizzaCard
-                            titlePizza={item.title}
-                            price={item.price}
-                            description={item.description}
-                        />
-                    )}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 20 }}
                 />
             </View>
         </ScrollView>
@@ -102,5 +39,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#191C21',
+    },
+
+    containerText: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: '700',
+        marginLeft: 12,
+        marginBottom: 14,
+    },
+    sectionStyle: {
+        flex: 1,
+        padding: 8,
     },
 })

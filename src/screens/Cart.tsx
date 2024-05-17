@@ -1,28 +1,43 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
-import { StyleSheet, View, ScrollView } from 'react-native'
-
-import Header from '../components/Header'
-
-type Props = {
-    route: {
-        params: {
-            selectedPizza: {
-                titlePizza: string
-                price: string
-                description: string
-            } | null
-        }
-    }
-}
+import { useCartStore } from '../stores/cart-store'
+import { StyleSheet, View, ScrollView, FlatList, Text } from 'react-native'
+import CartHeader from '../components/CartHeader'
 
 export default function CartProduct() {
+    const products = useCartStore((state) => state.products)
     return (
         <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
         >
-            <View style={styles.container}></View>
+            <View style={styles.container}>
+                <CartHeader title="Meu carrinho" />
+
+                {products.length === 0 ? (
+                    <Text style={styles.emptyCart}>
+                        Seu carrinho está vazio
+                    </Text>
+                ) : (
+                    <FlatList
+                        data={products}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <View style={styles.productContainer}>
+                                <Text style={styles.productTitle}>
+                                    {item.title}
+                                </Text>
+                                <Text style={styles.productQuantity}>
+                                    Quantidade: {item.quantity}
+                                </Text>
+                                <Text style={styles.productPrice}>
+                                    Preço: R$ {item.price}
+                                </Text>
+                            </View>
+                        )}
+                    />
+                )}
+            </View>
         </ScrollView>
     )
 }
@@ -30,52 +45,39 @@ export default function CartProduct() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 16,
         backgroundColor: '#191C21',
     },
-    cartProducts: {
-        width: '80%',
-        marginLeft: '10%',
-        marginTop: '10%',
-        marginBottom: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    image: {
-        height: 80,
-        width: 80,
-        marginRight: 20,
-    },
-    details: {
-        flex: 1,
-    },
     title: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    price: {
-        color: '#22c55e',
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    description: {
-        color: 'gray',
-        fontSize: 12,
-        marginBottom: 10,
-    },
-    btn: {
-        width: 40,
-        height: 40,
-        borderRadius: 5,
-        backgroundColor: '#22c55e',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 4,
-    },
-    textBtn: {
-        color: 'white',
         fontSize: 24,
+        fontWeight: 'bold',
+        color: 'white',
+        marginBottom: 16,
+        marginTop: 50,
+    },
+    emptyCart: {
+        fontSize: 18,
+        color: 'gray',
+        textAlign: 'center',
+        marginTop: 20,
+    },
+    productContainer: {
+        backgroundColor: '#2C2C2E',
+        padding: 16,
+        borderRadius: 8,
+        marginBottom: 16,
+    },
+    productTitle: {
+        fontSize: 18,
+        color: 'white',
+        marginBottom: 8,
+    },
+    productQuantity: {
+        fontSize: 16,
+        color: 'gray',
+    },
+    productPrice: {
+        fontSize: 16,
+        color: '#84cc16',
     },
 })

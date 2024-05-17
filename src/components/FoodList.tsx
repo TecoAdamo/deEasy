@@ -1,8 +1,10 @@
+import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {
     title: string
     isActive: boolean
+    onPress: () => void
 }
 
 export default function FoodList({ title, isActive, ...rest }: Props) {

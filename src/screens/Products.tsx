@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { RouteProp, useRoute } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import {
     StyleSheet,
@@ -9,16 +10,25 @@ import {
     ScrollView,
 } from 'react-native'
 
-import Header from '../components/Header'
-import Pizza from '../assets/pizza2.png'
-
 import Ionicons from '@expo/vector-icons/Ionicons'
+
+import { useCartStore } from '../stores/cart-store'
+
+import Header from '../components/Header'
 import BuyButton from '../components/BuyButton'
 
-export default function Products() {
+type ProductsScreenRouteProp = RouteProp<AuthRoutes, 'products'>
+
+export default function ProductDetails() {
+    const route = useRoute<ProductsScreenRouteProp>()
+    const { data } = route.params
+
     const [heartSelected, setHeartSelected] = useState(false)
     const [showFullDescription, setShowFullDescription] = useState(false)
-    const [selectedSize, setSelectedSize] = useState(null)
+    const [selectedSize, setSelectedSize] = useState<string | null>(null)
+    const [showIngredients, setShowIngredients] = useState(false)
+
+    const addProductToCart = useCartStore((state) => state.add)
 
     const toggleHeart = () => {
         setHeartSelected(!heartSelected)
@@ -27,19 +37,32 @@ export default function Products() {
     const toggleDescription = () => {
         setShowFullDescription(!showFullDescription)
     }
-    const selectSize = (size: any) => {
+
+    const toggleIngredients = () => {
+        setShowIngredients(!showIngredients)
+    }
+
+    const selectSize = (size: string) => {
         setSelectedSize(size)
+    }
+
+    const handleAddToCart = () => {
+        addProductToCart(data) // Adicionando produto ao carrinho
     }
 
     return (
         <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={{
+                flexGrow: 1,
+                paddingBottom: 100,
+                backgroundColor: '#191C21',
+            }}
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.container}>
-                <Header title="" />
+                <Header title="" cartQuantityItems={3} />
                 <StatusBar style="dark" />
-                <Image source={Pizza} style={styles.image} />
+                <Image source={data.thumbnail} style={styles.image} />
                 <View style={styles.btnHeart}>
                     <TouchableOpacity onPress={toggleHeart}>
                         {heartSelected ? (
@@ -60,23 +83,51 @@ export default function Products() {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.boxTitlePizza}>
-                    <Text style={styles.titlePizza}>Quatro queijos</Text>
-                    <Text style={styles.pricePizza}>R$ 49.90</Text>
+                    <Text style={styles.titlePizza}>{data.title}</Text>
+                    <Text style={styles.pricePizza}>R$ {data.price}</Text>
                     <View style={styles.boxDescription}>
                         <Text
                             style={styles.descriptionPizza}
                             numberOfLines={showFullDescription ? undefined : 4}
                         >
-                            A base macia e crocante da pizza é coberta com uma
-                            generosa quantidade de queijos derretidos e fatias
-                            de tomate suculentas, resultando em uma explosão de
-                            sabores que agrada a todos os paladares. É uma opção
-                            clássica e irresistível para os amantes de pizza.
+                            {data.description}
                         </Text>
+
                         {!showFullDescription && (
                             <TouchableOpacity onPress={toggleDescription}>
                                 <Text style={styles.verMais}>Ver mais</Text>
                             </TouchableOpacity>
+                        )}
+                    </View>
+                    <View style={styles.ingredientsContainer}>
+                        {!showIngredients && (
+                            <TouchableOpacity onPress={toggleIngredients}>
+                                <Text style={styles.verIngredients}>
+                                    Ver Ingredientes
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+                        {showIngredients && (
+                            <>
+                                <Text style={styles.ingredientsTitle}>
+                                    Ingredientes:
+                                </Text>
+                                {data.ingredients.map(
+                                    (ingredient: string, index: number) => (
+                                        <Text
+                                            key={index}
+                                            style={styles.ingredient}
+                                        >
+                                            {ingredient}
+                                        </Text>
+                                    )
+                                )}
+                                <TouchableOpacity onPress={toggleIngredients}>
+                                    <Text style={styles.verMais}>
+                                        Ocultar Ingredientes
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
                         )}
                     </View>
                 </View>
@@ -109,7 +160,15 @@ export default function Products() {
                         <Text style={styles.textBtn}>Grande</Text>
                     </TouchableOpacity>
                 </View>
-                <BuyButton title="Comprar" />
+                <TouchableOpacity onPress={handleAddToCart}>
+                    <BuyButton title="Adicionar ao pedido" />
+                    <Ionicons
+                        style={styles.iconAdd}
+                        size={30}
+                        color="white"
+                        name="add-circle-outline"
+                    />
+                </TouchableOpacity>
             </View>
         </ScrollView>
     )
@@ -121,18 +180,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#191C21',
     },
     image: {
-        height: '30%',
-        width: '80%',
-        marginLeft: '12%',
+        height: 280,
+        width: '100%',
+        borderRadius: 10,
     },
     btnHeart: {
         marginLeft: 30,
         marginTop: 30,
         height: 38,
     },
-
     iconHeart: {
         marginTop: 4,
+    },
+    iconAdd: {
+        bottom: 40,
+        left: 70,
     },
     iconHeartPlus: {
         flexDirection: 'row',
@@ -163,6 +225,9 @@ const styles = StyleSheet.create({
         color: '#DF2613',
         marginTop: 5,
     },
+    verIngredients: {
+        color: '#DF2613',
+    },
     boxBtn: {
         gap: 50,
         marginTop: 40,
@@ -181,5 +246,17 @@ const styles = StyleSheet.create({
     },
     selectedBtn: {
         backgroundColor: '#DF2613',
+    },
+    ingredientsContainer: {
+        marginTop: 20,
+    },
+    ingredientsTitle: {
+        fontSize: 20,
+        color: 'white',
+        fontWeight: '600',
+    },
+    ingredient: {
+        fontSize: 16,
+        color: 'gray',
     },
 })
