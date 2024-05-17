@@ -3,6 +3,10 @@ import { ProductDTO } from '../dtos/ProductDTS'
 
 export type AuthContextDataProps = {
     nameProduct: ProductDTO
+    cartTotal: number
+    updateCartTotal: (count: number) => void
+    selectedPizza: ProductDTO | null
+    setSelectedPizza: (pizza: ProductDTO) => void
 }
 
 type AuthContextProviderProps = {
@@ -12,20 +16,3 @@ type AuthContextProviderProps = {
 export const AuthContext = createContext<AuthContextDataProps>(
     {} as AuthContextDataProps
 )
-
-export function AuthContextProvider({ children }: AuthContextProviderProps) {
-    return (
-        <AuthContext.Provider
-            value={{
-                nameProduct: {
-                    id: '1',
-                    nameProduct: 'Frango com catupiry',
-                    price: 'R$ 29,90',
-                    description: 'Pizza de frango com catupiry.',
-                },
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    )
-}
