@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { AuthNavigatorRoutesProps } from '../routes/AuthRoutes'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AuthContext } from '../context/CartContext'
 
 import Ionicons from '@expo/vector-icons/Ionicons'
 
@@ -13,12 +16,21 @@ type Props = {
 
 export default function PizzaCard({ titlePizza, price, description }: Props) {
     const [heartSelected, setHeartSelected] = useState(false)
-    const [pizzaCount, setPizzaCount] = useState(0)
+    const { updateCartTotal } = useContext(AuthContext)
+    const [selectedPizza, setSelectedPizza] = useState<Props | null>(null)
 
     const toggleHeart = () => {
         setHeartSelected(!heartSelected)
+    }
 
-        setPizzaCount((prevAddPizza) => prevAddPizza + 1)
+    const navigation = useNavigation<AuthNavigatorRoutesProps>()
+
+    const handleAddToCart = () => {
+        setSelectedPizza({ titlePizza, price, description })
+    }
+
+    const handleProductsScreens = () => {
+        navigation.navigate('products')
     }
 
     return (
@@ -41,7 +53,12 @@ export default function PizzaCard({ titlePizza, price, description }: Props) {
                 )}
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    handleAddToCart()
+                    handleProductsScreens()
+                }}
+            >
                 <Image source={Pizza} style={styles.image} />
             </TouchableOpacity>
             <View style={styles.boxTextPizza}>
@@ -63,6 +80,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginLeft: 18,
         marginTop: 30,
+        marginBottom: 50,
         shadowColor: 'white',
         shadowOffset: {
             width: 0,
@@ -78,7 +96,6 @@ const styles = StyleSheet.create({
         marginLeft: 4,
         marginTop: 4,
     },
-
     image: {
         height: '80%',
         width: '150%',
