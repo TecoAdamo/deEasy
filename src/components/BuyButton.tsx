@@ -1,14 +1,37 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    TouchableOpacityProps,
+} from 'react-native'
 
-type Props = {
+type Props = TouchableOpacityProps & {
     title: string
+    variant?: 'solid' | 'outline'
+    onPress?: () => void
 }
 
-export default function BuyButton({ title }: Props) {
+export default function ButtonNativeBase({
+    title,
+    variant = 'solid',
+    onPress,
+}: Props) {
+    const buttonStyle =
+        variant === 'outline'
+            ? {
+                  backgroundColor: '#DF2613',
+              }
+            : { backgroundColor: 'green', borderWidth: 0 }
+    const textStyle =
+        variant === 'outline' ? { color: 'white' } : { color: 'white' }
+
     return (
-        <TouchableOpacity style={styles.buttonBtn}>
-            <Text style={styles.buttonText}>{title}</Text>
+        <TouchableOpacity
+            style={[styles.buttonBtn, buttonStyle]}
+            onPress={onPress}
+        >
+            <Text style={[styles.buttonText, textStyle]}>{title}</Text>
         </TouchableOpacity>
     )
 }

@@ -38,16 +38,8 @@ export default function ProductDetails() {
         setShowIngredients(!showIngredients)
     }
 
-    const selectSize = (size: string) => {
-        setSelectedSize(size)
-    }
-
     const handleAddToCart = () => {
-        if (selectedSize) {
-            addProductToCart({ ...data, size: selectedSize })
-        } else {
-            alert('Por favor, selecione um tamanho para a pizza.')
-        }
+        addProductToCart({ ...data })
     }
 
     return (
@@ -113,37 +105,9 @@ export default function ProductDetails() {
                         )}
                     </View>
                 </View>
-                <View style={styles.boxBtn}>
-                    <TouchableOpacity
-                        style={[
-                            styles.btn1,
-                            selectedSize === 'Pequena' && styles.selectedBtn,
-                        ]}
-                        onPress={() => selectSize('Pequena')}
-                    >
-                        <Text style={styles.textBtn}>Pequena</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            styles.btn1,
-                            selectedSize === 'Média' && styles.selectedBtn,
-                        ]}
-                        onPress={() => selectSize('Média')}
-                    >
-                        <Text style={styles.textBtn}>Média</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            styles.btn1,
-                            selectedSize === 'Grande' && styles.selectedBtn,
-                        ]}
-                        onPress={() => selectSize('Grande')}
-                    >
-                        <Text style={styles.textBtn}>Grande</Text>
-                    </TouchableOpacity>
-                </View>
+
                 <TouchableOpacity onPress={handleAddToCart}>
-                    <BuyButton title="Adicionar ao pedido" />
+                    <BuyButton title="Adicionar ao pedido" variant="outline" />
                     <Ionicons
                         style={styles.iconAdd}
                         size={30}
@@ -210,25 +174,7 @@ const styles = StyleSheet.create({
     verIngredients: {
         color: '#DF2613',
     },
-    boxBtn: {
-        gap: 50,
-        marginTop: 40,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    btn1: {
-        padding: 8,
-        borderWidth: 1,
-        borderColor: '#DF2613',
-        borderRadius: 10,
-    },
-    textBtn: {
-        color: 'white',
-    },
-    selectedBtn: {
-        backgroundColor: '#DF2613',
-    },
+
     ingredientsContainer: {
         marginTop: 20,
     },

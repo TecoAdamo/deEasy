@@ -1,13 +1,18 @@
-import { StatusBar } from 'expo-status-bar'
-import { Text, StyleSheet, View, SectionList, ScrollView } from 'react-native'
+import React from 'react'
+import {
+    StatusBar,
+    Text,
+    StyleSheet,
+    View,
+    SectionList,
+    ScrollView,
+} from 'react-native'
 
 import Header from '../components/Header'
 import GroupFood from '../components/GroupFoods'
-
-import { MENU } from '../utils/products'
 import Products from '../components/Products'
 
-import React from 'react'
+import { MENU } from '../utils/products'
 
 export default function Home() {
     return (
@@ -16,7 +21,6 @@ export default function Home() {
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.container}>
-                <StatusBar style="dark" />
                 <Header title="Home" cartQuantityItems={3} />
                 <GroupFood />
                 <SectionList
@@ -40,7 +44,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#191C21',
     },
-
     containerText: {
         color: 'white',
         fontSize: 20,
@@ -51,5 +54,11 @@ const styles = StyleSheet.create({
     sectionStyle: {
         flex: 1,
         padding: 8,
+    },
+    priceText: {
+        color: 'white',
+        fontSize: 16,
+        textAlign: 'center',
+        marginTop: 20,
     },
 })

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 24,
         flexDirection: 'row',
-        gap: 100,
+        gap: 90,
     },
     textHeader: {
         fontWeight: '600',

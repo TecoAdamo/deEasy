@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { FlatList, StyleSheet, View } from 'react-native'
 
 import FoodList from './FoodList'
 import { CATEGORIES } from '../utils/products'
-import React from 'react'
 
 export default function GroupFood() {
     const [category, setCategory] = useState(CATEGORIES[0])

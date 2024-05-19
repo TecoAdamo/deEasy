@@ -33,7 +33,6 @@ export default function ProductItem({ data, ...rest }: Props) {
             )}
             <View style={styles.containerView}>
                 <Text style={styles.textTitle}>{data?.title}</Text>
-                <Text style={styles.textPrice}>R$ {data?.price}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
     },
     imgLunch: {
         width: '80%',
-        height: 120,
+        height: 190,
         borderRadius: 10,
     },
     containerView: {
