@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { RouteProp, useRoute } from '@react-navigation/native'
+import { RouteProp, useRoute } from '@react-navigation/native/'
+
 import { StatusBar } from 'expo-status-bar'
 import {
     StyleSheet,
@@ -23,16 +24,11 @@ export default function ProductDetails() {
     const route = useRoute<ProductsScreenRouteProp>()
     const { data } = route.params
 
-    const [heartSelected, setHeartSelected] = useState(false)
     const [showFullDescription, setShowFullDescription] = useState(false)
     const [selectedSize, setSelectedSize] = useState<string | null>(null)
     const [showIngredients, setShowIngredients] = useState(false)
 
     const addProductToCart = useCartStore((state) => state.add)
-
-    const toggleHeart = () => {
-        setHeartSelected(!heartSelected)
-    }
 
     const toggleDescription = () => {
         setShowFullDescription(!showFullDescription)
@@ -47,7 +43,11 @@ export default function ProductDetails() {
     }
 
     const handleAddToCart = () => {
-        addProductToCart(data) // Adicionando produto ao carrinho
+        if (selectedSize) {
+            addProductToCart({ ...data, size: selectedSize })
+        } else {
+            alert('Por favor, selecione um tamanho para a pizza.')
+        }
     }
 
     return (
@@ -63,25 +63,7 @@ export default function ProductDetails() {
                 <Header title="" cartQuantityItems={3} />
                 <StatusBar style="dark" />
                 <Image source={data.thumbnail} style={styles.image} />
-                <View style={styles.btnHeart}>
-                    <TouchableOpacity onPress={toggleHeart}>
-                        {heartSelected ? (
-                            <Ionicons
-                                name="heart"
-                                size={30}
-                                color="#DF2613"
-                                style={styles.iconHeart}
-                            />
-                        ) : (
-                            <Ionicons
-                                name="heart-outline"
-                                size={30}
-                                color="#DF2613"
-                                style={styles.iconHeart}
-                            />
-                        )}
-                    </TouchableOpacity>
-                </View>
+
                 <View style={styles.boxTitlePizza}>
                     <Text style={styles.titlePizza}>{data.title}</Text>
                     <Text style={styles.pricePizza}>R$ {data.price}</Text>
