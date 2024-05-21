@@ -1,4 +1,5 @@
-De'Easy Delivery App
+# **De'Easy Delivery App**
+
 Welcome to De'Easy! This is a delivery application developed in React Native, designed to streamline user orders. Once an order is completed, it's forwarded to the establishment's WhatsApp, detailing the items ordered, delivery address, and payment method.
 ______________
 
