@@ -13,7 +13,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "~51.0.2",
     "expo-status-bar": "~1.12.1",
-    "native-base": "^2.15.2",
+    "native-base": "^3.4.28",
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-safe-area-context": "^3.3.2",
